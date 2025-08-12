@@ -1,8 +1,8 @@
 cc翻页 cc page turn
 //纸张翻页动画
 
-cc扭曲 cc lens，光学补偿
-//水滴效果
+cc扭曲 cc lens
+//光学补偿，水滴效果
 
 黑边 cc jaws
 //可以快速建立黑边，调整Height值到0%
