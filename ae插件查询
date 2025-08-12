@@ -1,13 +1,39 @@
-cc 翻页 cc page turn
+cc翻页 cc page turn
+//纸张翻页动画
+
 磨皮 Beauty box
+//人物磨皮插件
+
 颜色抠像 Composite Brush
+//点击颜色进行抠像插件
+
 电视噪点故障 Signal
+//老式电视机失真效果插件
+
 磁带损坏 uni.VHS
+//老式磁带播放效果插件（红巨星）
+
 马赛克损坏 Pixelocybe
+//像素马赛克
+
 胶片转场 uni.RetroGrade Transition
+//胶片转场
+
 AK热浪 Heat Distortion
+//热浪，水汽效果
+
 黑边 cc jaws
-球体 cc lens
+//可以快速建立黑边，调整Height值到0%
+
+cc扭曲 cc lens，光学补偿
+//水滴效果
+
 HDR全景图 Horizon
+//
+
 专业胶片调色 FilmConvertNitrate
+//
+
 图像转线条 Plotter
+//
+
