@@ -1,6 +1,12 @@
 cc翻页 cc page turn
 //纸张翻页动画
 
+cc扭曲 cc lens，光学补偿
+//水滴效果
+
+黑边 cc jaws
+//可以快速建立黑边，调整Height值到0%
+
 磨皮 Beauty box
 //人物磨皮插件
 
@@ -22,12 +28,6 @@ cc翻页 cc page turn
 AK热浪 Heat Distortion
 //热浪，水汽效果
 
-黑边 cc jaws
-//可以快速建立黑边，调整Height值到0%
-
-cc扭曲 cc lens，光学补偿
-//水滴效果
-
 HDR全景图 Horizon
 //导入HDR全景图为3D背景
 
@@ -38,3 +38,8 @@ HDR全景图 Horizon
 //黑白闪的线条
 //漫画速度线的线条（叠在分形杂色上可以线条粗细一致）
 
+3D光环电波 Aura
+//线条隧道 冲击波线条
+
+颜色自动变换 Color Wiggle
+//设置渐变颜色自动变换，可以循环
