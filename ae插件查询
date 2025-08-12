@@ -7,6 +7,12 @@ cc扭曲 cc lens，光学补偿
 黑边 cc jaws
 //可以快速建立黑边，调整Height值到0%
 
+cc重复 CC RepeTile
+//手动动态拼贴 可以扩边缘
+
+边缘扩大 RGS Grow Bounds
+//红巨星的边缘扩大出图层边界
+
 磨皮 Beauty box
 //人物磨皮插件
 
@@ -43,3 +49,6 @@ HDR全景图 Horizon
 
 颜色自动变换 Color Wiggle
 //设置渐变颜色自动变换，可以循环
+
+显示器像素风格 TVPixel
+//制作显示器像素效果
