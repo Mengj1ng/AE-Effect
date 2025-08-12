@@ -1,3 +1,6 @@
+快速镜头模糊 Fast Camera Lens Blur
+//和Bokeh效果一样，但是速度快20倍
+
 cc翻页 cc page turn
 //纸张翻页动画
 
@@ -32,16 +35,28 @@ cc重复 CC RepeTile
 //老式电视机失真效果插件
 
 显示器电视像素效果 uni.Analog
-//好看的显示器效果模拟插件
+//好看的显示器效果模拟插件（红巨星）
 
 磁带损坏 uni.VHS
-//老式磁带播放效果插件（红巨星）
+//老式磁带播放效果插件
 
-马赛克损坏 Pixelocybe
-//像素马赛克
+黑白电影 uni.RetroGrade
+//黑白老胶片效果
 
 胶片转场 uni.RetroGrade Transition
 //胶片转场
+
+高光区域发光 uni.Chromatic Glow
+//高光部分色散光晕（横向光），可做氛围
+
+边缘色差 uni.Chromatic Aberration
+//可以设置边缘径向模糊的色差插件，边缘可以添加纹理图案
+
+分形杂色背景 uni.Fractal Background
+//可快速创建循环的分型背景
+
+马赛克损坏 Pixelocybe
+//像素马赛克
 
 AK热浪 Heat Distortion
 //热浪，水汽效果
