@@ -13,6 +13,15 @@ cc重复 CC RepeTile
 边缘扩大 RGS Grow Bounds
 //红巨星的边缘扩大出图层边界
 
+半调 m's Halftone
+//好用的半调点状插件
+
+中继器 Echospace
+//3D中继器插件
+
+天空背景HDR全景图 Horizon
+//导入HDR全景图为3D背景 也可以用渐变做背景
+
 磨皮 Beauty box
 //人物磨皮插件
 
@@ -21,6 +30,9 @@ cc重复 CC RepeTile
 
 电视噪点故障 Signal
 //老式电视机失真效果插件
+
+显示器电视像素效果 uni.Analog
+//好看的显示器效果模拟插件
 
 磁带损坏 uni.VHS
 //老式磁带播放效果插件（红巨星）
@@ -33,9 +45,6 @@ cc重复 CC RepeTile
 
 AK热浪 Heat Distortion
 //热浪，水汽效果
-
-HDR全景图 Horizon
-//导入HDR全景图为3D背景
 
 专业胶片调色 FilmConvertNitrate
 //好看的胶片颗粒和高光边缘泛光
