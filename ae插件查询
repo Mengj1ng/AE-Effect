@@ -61,6 +61,9 @@ cc重复 CC RepeTile
 AK热浪 Heat Distortion
 //热浪，水汽效果
 
+沙化 Dust Transition
+//快速灰尘粒子飘散，可3D
+
 专业胶片调色 FilmConvertNitrate
 //好看的胶片颗粒和高光边缘泛光
 
@@ -85,3 +88,15 @@ AK热浪 Heat Distortion
 
 8bit像素 RetroDither
 //复古8bit风格插件，可以快速设置颜色数量等
+
+图片流动 loopFlow
+//使用2个蒙版来控制流动动画
+
+云雾 Nebulosity
+//快速3D云雾
+
+图形网格生成 Reka Grid
+//可以做阵列图形背景，可以用黑白图层控制动画
+
+线条流动 Volna
+//使用2个蒙版来控制线条流动动画
