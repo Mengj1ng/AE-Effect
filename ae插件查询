@@ -55,3 +55,9 @@ HDR全景图 Horizon
 
 信号干扰损坏 Glitch 7in1
 //像素拉伸
+
+冲击环 YY_ShockRing
+//快速冲击波，可以设置渐变颜色等
+
+8bit像素 RetroDither
+//复古8bit风格插件，可以快速设置颜色数量等
