@@ -16,6 +16,9 @@ cc重复 CC RepeTile
 边缘扩大 RGS Grow Bounds
 //红巨星的边缘扩大出图层边界
 
+色调分离 Quick Chromatic Aberration 3
+//三色色差 好用的边缘颜色分离
+
 半调 m's Halftone
 //好用的半调点状插件
 
