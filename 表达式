@@ -1,0 +1,25 @@
+//空对象限定渐变位置 thisComp.toComp([0,0,0]);
+
+//随机数小数点  .value.toFixed(0)
+
+//AE表达式滑动缩放等间距平移表达式 BV1FK421k7B3
+第一个图层表达式：
+缩放属性：
+
+x=transform.position[0];//获取本图层位移参数的X位置
+p=thisComp.width/2;//获取本合成组的宽度中点数值
+a=length(x, p);//计算出图层X位置到中点的距离
+b=ease(a, 0, p, 100, 50);//缓动插值，当a值为0时输出100，当a值为p值时输出50
+[b,b]//给缩放参数赋值
+
+第二个图层表达式：
+位置属性：
+a=thisLayer.sourceRectAtTime().width*transform.scale[0]*0.01/2;//获取本图层宽度的一半
+b=thisComp.layer(index+1).sourceRectAtTime().width*thisComp.layer(index+1).transform.scale[0]*0.01/2;//获取本图层下一层的宽度的一半
+c=a+b;//求和
+x=thisComp.layer(index+1).transform.position[0]+c+80;//给位置属性X轴赋值
+y=transform.position[1];//给位置属性Y轴赋值
+[x,y]//给位置属性赋值
+
+缩放属性：
+thisComp.layer(index+1).transform.scale.valueAtTime(time-1.5)//层偏移，使用本图层的下一层的参数但是时间偏移1.5s
