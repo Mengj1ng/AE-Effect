@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Quick Layers Pro</title>
+    <style>
+        /* --- 0. 重置 --- */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1e1e1e;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* --- 1. 主容器 --- */
+        #app {
+            width: 100%;
+            height: 100%;
+            /* 极小边距，给图标留空间 */
+            padding: 2px; 
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* 靠上对齐 */
+        }
+
+        /* --- 2. 网格布局 --- */
+        #grid {
+            display: grid;
+            /* 1px 间隙 */
+            gap: 2px; 
+            
+            /* 列数由 JS 控制，单格允许无限缩小 */
+            grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
+            
+            width: 100%;
+            /* 高度自适应 */
+            height: auto;
+            
+            align-content: start;
+        }
+
+        /* --- 3. 按钮 --- */
+        .btn {
+            background-color: #333;
+            width: 100%;
+            /* 强制正方形 */
+            aspect-ratio: 1 / 1;
+            
+            /* 核心：无视最小尺寸限制 */
+            min-width: 0 !important;
+            min-height: 0 !important;
+            
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.1s;
+        }
+
+        .btn:hover { background-color: #444; }
+        .btn:active { background-color: #252525; }
+
+        /* --- 4. 图标 --- */
+        .btn svg {
+            /* 稍微大一点，看清图标 */
+            width: 75%;
+            height: 75%;
+            display: block;
+            pointer-events: none;
+            flex-shrink: 0;
+        }
+
+        /* 配色 */
+        .fill-gray { fill: #ccc; }
+        .stroke-gray { fill: none; stroke: #ccc; stroke-width: 2; }
+        .fill-gray-part { fill: #ccc; stroke: none; }
+        .stroke-red { fill: none; stroke: #e74c3c; stroke-width: 2; }
+        .fill-red { fill: #e74c3c; stroke: none; }
+        .cam-fill { fill: #ccc; }
+
+        /* 指示点 */
+        .dot {
+            position: absolute;
+            top: 2px; right: 2px;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div id="app">
+        <div id="grid">
+            
+            <!-- 1. 纯色层 -->
+            <div class="btn" id="btn-solid" title="左键: 纯色 / 右键: 设置">
+                <div class="dot" style="background: #555;"></div>
+                <svg viewBox="0 0 24 24"><rect class="fill-gray" x="4" y="4" width="16" height="16" rx="2"/></svg>
+            </div>
+
+            <!-- 2. 调整图层 -->
+            <div class="btn" id="btn-adj" title="左键: 调整图层 / 右键: 设置">
+                <div class="dot" style="background: #e17055;"></div>
+                <svg viewBox="0 0 24 24">
+                    <circle class="stroke-gray" cx="12" cy="12" r="9" />
+                    <path class="fill-gray-part" d="M12 3 A9 9 0 0 0 12 21 Z" />
+                </svg>
+            </div>
+
+            <!-- 3. 空对象 -->
+            <div class="btn" id="btn-null" title="左键: 空对象 / 右键: 命名">
+                <svg viewBox="0 0 24 24">
+                    <rect class="stroke-red" x="5" y="5" width="14" height="14" rx="1" />
+                    <rect class="fill-red" x="4" y="4" width="3" height="3" />
+                    <rect class="fill-red" x="17" y="4" width="3" height="3" />
+                    <rect class="fill-red" x="17" y="17" width="3" height="3" />
+                    <rect class="fill-red" x="4" y="17" width="3" height="3" />
+                </svg>
+            </div>
+
+            <!-- 4. 摄像机 -->
+            <div class="btn" id="btn-cam" title="左键: 摄像机 / 右键: 设置">
+                <div class="dot" style="background: #0984e3;"></div>
+                <svg viewBox="0 0 24 24">
+                    <circle class="cam-fill" cx="9" cy="6" r="3.5" />
+                    <circle class="cam-fill" cx="15" cy="6" r="3.5" />
+                    <rect class="cam-fill" x="4" y="9" width="14" height="10" rx="1" />
+                    <path class="cam-fill" d="M18 11 l 4 -2 v 10 l -4 -2 z" />
+                </svg>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="CSInterface.js"></script>
+    <script>
+        var cs = new CSInterface();
+        
+        // --- 核心：简单粗暴的判断 ---
+        const grid = document.getElementById('grid');
+        
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                const w = entry.contentRect.width;
+                const h = entry.contentRect.height;
+                
+                if (w < 1 || h < 1) return;
+
+                let cols = 2; // 默认
+
+                // 逻辑优先级：
+                // 1. 如果宽度 < 60px，必须是单列 (适应极窄模式)
+                // 2. 如果宽度 > 高度，倾向于横排 (4列)
+                // 3. 其他情况，方阵 (2列)
+
+                if (w < 60) {
+                    cols = 1;
+                } else if (w > h * 1.5) { // 宽度显著大于高度
+                    cols = 4;
+                } else {
+                    cols = 2;
+                }
+                
+                grid.style.setProperty('--cols', cols);
+            }
+        });
+        
+        resizeObserver.observe(document.body);
+
+        // --- 交互逻辑 ---
+        const actions = {
+            'btn-solid': 'Solid',
+            'btn-adj':   'Adj',
+            'btn-null':  'Null',
+            'btn-cam':   'Cam'
+        };
+
+        Object.keys(actions).forEach(id => {
+            let el = document.getElementById(id);
+            let type = actions[id];
+            
+            el.addEventListener('mousedown', (e) => {
+                if (e.button === 0) {
+                    cs.evalScript(`fastCreate("${type}")`);
+                } 
+                else if (e.button === 2) {
+                    cs.evalScript(`showDialog("${type}")`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
