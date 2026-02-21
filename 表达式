@@ -1,7 +1,8 @@
+// ===================================================================================================================================================
 //空对象限定渐变位置 thisComp.toComp([0,0,0]);
-
+// ===================================================================================================================================================
 //随机数小数点  .value.toFixed(0)
-
+// ===================================================================================================================================================
 //AE表达式滑动缩放等间距平移表达式 BV1FK421k7B3
 第一个图层表达式：
 缩放属性：
@@ -23,3 +24,79 @@ y=transform.position[1];//给位置属性Y轴赋值
 
 缩放属性：
 thisComp.layer(index+1).transform.scale.valueAtTime(time-1.5)//层偏移，使用本图层的下一层的参数但是时间偏移1.5s
+
+// ===================================================================================================================================================
+// [AE架构师] 3D 路径追踪核心 (v6.0 通用版)
+
+// ------------- 1. 配置区域 (只改这里) -------------
+
+// ⚡️ 目标图层的名字 (必须完全一致)
+const targetLayerName = "星星线条";
+
+// ⚡️ 形状组的名字 (通常是 "形状 1"，如果改名了要跟着改)
+const shapeGroupName = "形状 1";
+
+// ⚡️ 路径的名字 (在形状组里面)
+const pathName = "路径 1";
+
+// ⚡️ 修剪路径的名字 (通常在最外层，也可能在组内)
+const trimPathName = "修剪路径 1";
+
+// ⚡️ 追踪哪个点？ "end" (头) 或 "start" (尾)
+const trackType = "end"; 
+
+
+// ------------- 2. 核心逻辑 (无需修改) -------------
+
+// 获取图层对象
+var targetLayer = thisComp.layer(targetLayerName);
+
+// 获取形状组对象 (用于校正组内位移)
+var shapeGroup = targetLayer.content(shapeGroupName);
+
+// 获取路径对象
+var pathProp = shapeGroup.content(pathName).path;
+
+// 智能查找修剪路径 (优先找最外层，其次找组内)
+var trimProp;
+if (targetLayer.content(trimPathName) != null) {
+    trimProp = targetLayer.content(trimPathName); // 情况A: 在最外层
+} else if (shapeGroup.content(trimPathName) != null) {
+    trimProp = shapeGroup.content(trimPathName);  // 情况B: 在组内
+} else {
+    throw "错误：找不到修剪路径，请检查名字是否正确！";
+}
+
+// ------------- 3. 进度计算 -------------
+
+// 获取修剪路径的参数
+var pct = (trackType == "end") ? trimProp.end : trimProp.start;
+var offsetVal = trimProp.offset;
+
+// 计算总进度 (百分比 + 偏移量)
+// 这里的 % 1 是为了让数值永远在 0-1 之间循环
+var currentProgress = (pct / 100 + offsetVal / 360) % 1;
+
+// 修正负数偏移 (防止反向旋转时出错)
+if (currentProgress < 0) currentProgress += 1;
+
+
+// ------------- 4. 空间坐标转换 (3D 修正) -------------
+
+// A. 获取路径上的原始坐标
+var rawPathPos = pathProp.pointOnPath(currentProgress);
+
+// B. 补偿形状组变换 (关键步骤)
+// 如果你动了形状组里面的位置/锚点，这里会进行补偿
+var groupPos = shapeGroup.transform.position;
+var groupAnchor = shapeGroup.transform.anchorPoint;
+
+var correctedPos = [
+    rawPathPos[0] - groupAnchor[0] + groupPos[0],
+    rawPathPos[1] - groupAnchor[1] + groupPos[1],
+    0 // 形状层路径默认在 Z=0 平面
+];
+
+// C. 转换为世界绝对坐标 (toWorld)
+// 处理所有摄像机视角、父子级关系、以及图层自身的3D旋转
+targetLayer.toWorld(correctedPos);
