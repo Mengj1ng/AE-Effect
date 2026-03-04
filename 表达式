@@ -100,3 +100,57 @@ var correctedPos = [
 // C. 转换为世界绝对坐标 (toWorld)
 // 处理所有摄像机视角、父子级关系、以及图层自身的3D旋转
 targetLayer.toWorld(correctedPos);
+
+// ===================================================================================================================================================
+// Matrix 雨 代码下落表达式
+// 贴在 Source Text → Alt+点秒表
+
+var charset = "加载运行终止错误警告系统核心数据流量加密解密入侵防御扫描检测覆写删除上传下载同步备份还原崩溃重启授权拒绝隔离追踪锁定解锁突破渗透劫持伪装欺骗潜伏爆破{}[]<>|/\\=+-*&^%$#@!?:;01";
+
+var colIndex  = index;
+var charSpeed = 15;
+var streamLen = 28;
+
+var result = "";
+var frame  = Math.floor(time * charSpeed);
+
+for (var i = 0; i < streamLen; i++) {
+    seedRandom(i * 1000 + frame + colIndex * 9999, true);
+    var idx = Math.floor(random() * charset.length);
+    result += charset[idx] + "\n";
+}
+
+result;
+
+
+// 贴在 Position → Alt+点秒表
+// 复制多层无需改任何数字，index 自动识别
+
+var colIndex   = index;
+
+var colSpacing = 52;      // 列间距(px)
+var marginLeft = 40;      // 左边距(px)
+var charSize   = 28;      // 行高(px)，与文字行距一致
+var streamLen  = 28;      // 与 Source Text 里的 streamLen 一致
+
+// 每列用 index 做种子，生成专属的随机速度（不做时间延迟）
+seedRandom(colIndex * 13, true);
+var fallSpeed = 200 + random() * 300;  // 每列速度 200~500px/s 随机
+
+// 字符流总高度
+var streamHeight = streamLen * charSize;
+
+// 循环范围：从流顶刚好在屏幕上方 到 流底离开屏幕下方
+var totalLoop = thisComp.height + streamHeight;
+
+// time * speed 直接取模，立刻从头开始，循环不停
+var elapsed = time * fallSpeed;
+
+// 每列用 index 偏移初始相位，让各列起始位置错开，不要全部从同一起点出发
+seedRandom(colIndex * 7, true);
+var phaseOffset = random() * totalLoop;
+
+var x = marginLeft + (colIndex - 1) * colSpacing;
+var y = -streamHeight + (elapsed + phaseOffset) % totalLoop;
+
+[x, y];
