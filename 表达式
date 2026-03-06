@@ -154,3 +154,49 @@ var x = marginLeft + (colIndex - 1) * colSpacing;
 var y = -streamHeight + (elapsed + phaseOffset) % totalLoop;
 
 [x, y];
+
+// ===================================================================================================================================================
+// 
+//  打字机表达式 · 字符出现前 2 帧显示占位符
+//  引擎：JavaScript 表达式引擎（AE 24 / 25 / 26）
+//  挂载位置：文本图层 → Source Text
+// 
+
+// ── 参数区（按需修改） ──────────────────────────────────────
+var fullText     = "这里填写你的完整文字";  // 目标文本内容
+var charDelay    = 5;                        // 每个字符之间的间隔帧数（建议 >= 3）
+var startFrame   = 0;                        // 从第几帧开始打字
+var placeholder  = "▒";                      // 占位符（可换成 ◻ □ ▒ 等）
+var previewFrames = 8;                       // 占位符提前出现的帧数
+// ────────────────────────────────────────────────────────────
+
+var fps          = thisComp.frameDuration;
+var currentFrame = Math.floor(time / fps);
+var elapsed      = currentFrame - startFrame;
+
+var result = "";
+var totalChars = fullText.length;
+
+for (var i = 0; i < totalChars; i++) {
+
+    // 该字符「变成真实字」的帧
+    var revealFrame = i * charDelay;
+
+    // 该字符「占位符开始出现」的帧
+    var placeholderFrame = revealFrame - previewFrames;
+
+    if (elapsed < placeholderFrame) {
+        // 还没到占位符出现的时机：这个位置什么都没有
+        result += "";
+
+    } else if (elapsed < revealFrame) {
+        // 占位符阶段：出现前 2 帧显示占位符
+        result += placeholder;
+
+    } else {
+        // 已到出场帧：永久显示真实字符
+        result += fullText[i];
+    }
+}
+
+result;
