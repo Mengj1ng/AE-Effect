@@ -203,3 +203,52 @@ for (var i = 0; i < totalChars; i++) {
 
 result;
 
+
+// ===================================================================================================================================================
+// ============================================================
+//  打字机表达式 · 自动读取正下方图层的文字内容，2层图层
+//  无需写死图层名称，顺序对齐即可
+//  引擎：JavaScript 表达式引擎（AE 24 / 25 / 26）
+//  挂载位置：「显示层」文本图层 → Source Text
+// ============================================================
+
+// ── 参数区（按需修改） ──────────────────────────────────────
+var charDelay     = 4;    // 每个字符之间的间隔帧数（建议 >= 3）
+var startFrame    = 0;    // 从第几帧开始打字
+var placeholder   = "█";  // 占位符（可换成 ◻ □ ▒ 等）
+var previewFrames = 2;    // 占位符提前出现的帧数
+// ────────────────────────────────────────────────────────────
+
+// 自动读取正下方图层（index + 1）的文字内容
+var dataLayer = thisComp.layer(thisLayer.index + 1);
+var fullText  = dataLayer.text.sourceText.value;
+
+// ────────────────────────────────────────────────────────────
+
+var fps          = thisComp.frameDuration;
+var currentFrame = Math.floor(time / fps);
+var elapsed      = currentFrame - startFrame;
+
+var result     = "";
+var totalChars = fullText.length;
+
+for (var i = 0; i < totalChars; i++) {
+
+    var revealFrame      = i * charDelay;
+    var placeholderFrame = revealFrame - previewFrames;
+
+    if (elapsed < placeholderFrame) {
+        // 还没到占位符时机：什么都不显示
+        result += "";
+
+    } else if (elapsed < revealFrame) {
+        // 占位符阶段：提前 2 帧显示占位符
+        result += placeholder;
+
+    } else {
+        // 已到出场帧：永久显示真实字符
+        result += fullText[i];
+    }
+}
+
+result;
